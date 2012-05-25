@@ -1,0 +1,16 @@
+<template name="friendpanel">
+  <div id="friendpanel">
+    <div><strong>{{username}}</strong></div>
+    <div id="friendlist">
+    {{#each friends}}
+      {{> friend}}
+    {{/each}}
+    </div>
+  </div>
+</template>
+
+<template name="friend">
+  <div class="frienditem">
+    <span class="friendname{{status}}">{{name}}</span>
+  </div>
+</template>

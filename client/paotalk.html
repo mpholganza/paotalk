@@ -3,6 +3,18 @@
 </head>
 
 <body>
-  <h1>welcome to paotalk.</h1>
+  {{> paotalk}}
 </body>
+
+<template name="paotalk">
+  <div id="paotalk">
+    {{#if signed_in}}
+      {{> home}}
+    {{/if}}
+
+    {{#unless signed_in}}
+      {{> landing}}
+    {{/unless}}
+  </div>
+</template>
 
