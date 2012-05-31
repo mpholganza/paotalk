@@ -89,13 +89,11 @@ Template.room.events = {
   },
   'click input.addfriendsbutton': function () {
     var friendstoaddlist = document.getElementById("friendsforroom_" + this.roomid);
-    alert(friendstoaddlist);
     if (friendstoaddlist.hasChildNodes()) {
       var friendnodes = friendstoaddlist.children;
       var friendidstoadd = [];
       for (var i = 0; i < friendnodes.length; i++) {
         var friendnode = friendnodes[i].children[0]; // firstChild equivalent for only element type nodes
-        alert(friendnode.value);
         if (friendnode.checked) {
           friendidstoadd.push(friendnode.value);
         }
