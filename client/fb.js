@@ -58,6 +58,14 @@ function logon(user) {
     Meteor.subscribe("friendslist", Session.get("userid"));
   });
 
+  Meteor.autosubscribe(function () {
+    Meteor.subscribe("userroomlist", Session.get("userid"));
+  });
+
+  Meteor.autosubscribe(function () {
+    Meteor.subscribe("messagelist");
+  });
+
   updateUserStatusTimer = Meteor.setInterval(updateUserStatus, 10000);
 }
 

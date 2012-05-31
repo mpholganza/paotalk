@@ -1,4 +1,5 @@
 Users = new Meteor.Collection("users");
+UserRooms = new Meteor.Collection("userrooms");
 Rooms = new Meteor.Collection("rooms");
 Messages = new Meteor.Collection("messages");
 
@@ -14,6 +15,14 @@ Meteor.publish("friendslist", function (userid) {
     // TODO: user.friends will not establish a reactive context for invalidation
     return Users.find({_id: {$in : user.friends}});
   } 
+});
+
+Meteor.publish("userroomlist", function (userid) {
+  return UserRooms.find({userid:userid});
+});
+
+Meteor.publish("messagelist", function () {
+  return Messages.find({});
 });
 
 Meteor.methods({
@@ -54,18 +63,38 @@ Meteor.methods({
     // Add friends to friendlist
     Users.update(userid, {$pushAll : {friends: friendids}});
   },
-  /*getFriends: function (userid) {
-    console.log("getFriends");
-    var user = Users.findOne({_id:userid});
-    if (user && user.friends) {
-      return Users.find({_id: {$in : user.friends}});
-    }
-  },*/
   updateUserStatus: function (userid) {
     // returning the current SERVER time so proper time comparisons
     // can be calculated on the client side
     Users.update(userid, {$set: {lastactive: new Date().getTime()}});                  
     return new Date().getTime();
+  },
+  createRoom: function (userid, roomname) {
+    var roomid = Rooms.insert({
+      roomname:roomname
+    });
+
+    UserRooms.insert({
+      userid:userid,
+      roomid:roomid,
+      roomname:roomname,
+      isadmin:1
+    });
+  },
+  addUserToRoom: function (userid, roomid, roomname) {
+    UserRooms.insert({
+      userid:userid,
+      roomid:roomid,
+      roomname:roomname
+    });
+  },
+  sendMessage: function (roomid, authorid, authorname, message) {
+    return Messages.insert({
+      roomid:roomid,
+      authorid:authorid,
+      authorname:authorname,
+      message:message
+    });
   },
   test: function (x) {
     console.log("test function: " + x);
