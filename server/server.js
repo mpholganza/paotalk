@@ -102,3 +102,9 @@ Meteor.methods({
   }
 });
 
+var handle = Messages.find({}).observe({
+  added: function (message) {
+    Messages.update({_id:message._id}, {$set: {datetime:new Date().getTime()}});
+  }
+});
+

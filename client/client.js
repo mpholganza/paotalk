@@ -78,6 +78,8 @@ Template.room.events = {
     );*/
     Messages.insert({
       roomid:this.roomid,
+      authorid:Session.get("userid"),
+      authorname:Session.get("username"),
       message:document.getElementById("messagetext_" + this.roomid).value
     });
   },
@@ -124,4 +126,12 @@ Template.room.isadmin = function () {
 
 Template.room.friendsforadd =  function () {
   return Users.find({});
+};
+
+Template.message.readabledatetime = function () {
+  return new Date(this.datetime).toLocaleTimeString();
+};
+
+Template.message.serverconfirmed = function () {
+  return this.datetime;
 };

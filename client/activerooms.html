@@ -1,0 +1,65 @@
+<template name="activerooms">
+  <div id="activerooms">
+  {{#if rooms}}
+    {{#each rooms}}
+      {{> room}}
+    {{/each}}
+  {{/if}}
+  </div>
+</template>
+
+<template name="room">
+{{#if showroom}}
+  <div id="room_{{roomid}}" class="room">
+    <h1 class="roomtitle">{{roomname}}</h1>
+    {{#each messages}}
+      {{> message}}
+    {{/each}}
+    <textarea id="messagetext_{{roomid}}" />
+    <input type="button" class="sendbutton" value="send" />
+ 
+    {{#if isadmin}}
+    <input type="button" class="showaddfriendsbutton" value="add friends to this room" />
+      {{#if addingfriends}}
+      <div class="addfriendsdialog">
+        <h2>add friends</h2>
+        <div id="friendsforroom_{{roomid}}">
+        {{#if friendsforadd}}
+          {{#each friendsforadd}}
+            {{> frienditem}}
+          {{/each}}
+        {{/if}}
+        </div>
+        
+        {{#unless friendsforadd}}
+        <div>no friends to add</div>
+        {{/unless}}
+
+        <input type="button" id="addfriendsbutton" class="addfriendsbutton" value="add friends" />
+        <input type="button" class="hideaddfriendsbutton" value="cancel" />
+      </div>
+      {{/if}}
+    {{/if}}
+  </div>
+{{/if}}
+</template>
+
+<template name="message">
+  <div class="message">
+    <span class="author">{{authorname}}</span>
+    {{#if serverconfirmed}}
+    <span class="datetime">{{readabledatetime}}</span>
+    <div class="message">{{message}}</div>
+    {{/if}}
+
+    {{#unless serverconfirmed}}
+    <div class="pendingmessage">{{message}}</div>
+    {{/unless}}
+  </div>
+</template>
+
+<template name="frienditem">
+  <div class="frienditem">
+    <input type="checkbox" value="{{_id}}">{{name}}</input>
+  </div>
+</template>

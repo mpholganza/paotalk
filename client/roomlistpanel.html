@@ -1,0 +1,22 @@
+<template name="roomlistpanel">
+  <div id="roomlistpanel">
+    <div>my rooms:</div>
+    {{#if rooms}}
+      {{#each rooms}}
+        {{> roomitem}}
+      {{/each}}
+    {{/if}}
+
+    {{#unless rooms}}
+      <div>you have no rooms.</div>
+    {{/unless}}
+    <input type="text" id="createroomtext" placeholder="enter room name" />
+    <input type="button" class="createroombutton" value="create room" />
+  </div>
+</template>
+
+<template name="roomitem">
+  <div class="roomitem">
+    <span class="roomname">{{roomname}}</span>
+  </div>
+</template>
