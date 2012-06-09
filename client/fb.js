@@ -10,7 +10,8 @@
 // listen for and handle auth.statusChange events
 window.fbAsyncInit = function () {
   FB.init({
-    appId: '188842814549433', // App ID
+    appId: '397712360279294', // App ID
+    // appId: '188842814549433', old app ID
     //channelUrl: '//guessanumber.com/channel.html', // Path to your Channel File
     status: true, // check login status
     cookie: true, // enable cookies to allow the server to access the session
@@ -34,7 +35,6 @@ window.fbAsyncInit = function () {
 }
 
 function importFriends(userid) {
-  alert("importFriends");
   // Should I just use session userid here instead of parameter?
   FB.api('me/friends', function (friends) {
     //for (f in friends.data) {
@@ -66,20 +66,30 @@ function logon(user) {
     Meteor.subscribe("messagelist");
   });
 
-  updateUserStatusTimer = Meteor.setInterval(updateUserStatus, 10000);
+  // TODO: remove hardcode of 1 minute
+  updateUserStatus();
+  updateUserStatusTimer = Meteor.setInterval(updateUserStatus, 60000);
+
+  window.onbeforeunload = function () {
+    logoff();
+  };
+ 
+  window.onunload = function () {
+    logoff();
+  };
 }
 
 function logoff() {
+  Meteor.call("updateUserStatus", Session.get("userid"), 'offline');
+
   Session.set("userid", "");
   Session.set("username", "");
   Session.set("userfbid", "");
 
   Meteor.clearInterval(updateUserStatusTimer);
+  FB.logout();
 }
 
 function updateUserStatus () {
-  Meteor.call("updateUserStatus", Session.get("userid"), function (err, result) {
-    if (err) { /* TODO: lost server connection do something? */ return; }
-    Session.set("currenttime", result);
-  });
+  Meteor.call("updateUserStatus", Session.get("userid"), 'online');
 }

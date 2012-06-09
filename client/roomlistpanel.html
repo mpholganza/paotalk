@@ -1,6 +1,6 @@
 <template name="roomlistpanel">
-  <div id="roomlistpanel">
-    <div>my rooms:</div>
+  <div id="roomlistpanel" class="roomlistpanel">
+    <div class="panelheader">rooms</div>
     {{#if rooms}}
       {{#each rooms}}
         {{> roomitem}}
@@ -8,15 +8,26 @@
     {{/if}}
 
     {{#unless rooms}}
-      <div>you have no rooms.</div>
+    <div class="paneltext">no rooms</div>
     {{/unless}}
-    <input type="text" id="createroomtext" placeholder="enter room name" />
-    <input type="button" class="createroombutton" value="create room" />
+
+    {{#unless showcreateroom}}
+    <div class="addroomsbutton panelbutton">add rooms...</div>
+    {{/unless}}
+
+    {{#if showcreateroom}}
+    <div id="addroomdialog">
+      <div class="paneltext">new room name:</div>
+      <input type="text" id="createroomtext" placeholder="enter room name" />
+      <span class="createroombutton panelbutton">create room</span>
+      <span class="canceladdroomsbutton panelbutton">cancel</span>
+    </div>
+    {{/if}}
   </div>
 </template>
 
 <template name="roomitem">
-  <div class="roomitem">
-    <span class="roomname">{{roomname}}</span>
+  <div class="roomitem roomitem{{isactive}}">
+    <span class="paneltext">{{roomname}}</span>
   </div>
 </template>

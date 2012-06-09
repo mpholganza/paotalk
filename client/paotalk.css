@@ -1,7 +1,207 @@
-.friendnameonline {
+html {
+  height:100%;
+  margin:0;
+  padding:0;
+}
+
+body {
+  font-family:'Arial', sans-serif;
+  height:100%;
+  margin:0;
+  padding:0;
+}
+
+#paotalk {
+  height:95%;
+}
+
+#landing {
+  height:95%;
+}
+
+#splash {
+  display:block;
+  margin-left:auto;
+  margin-right:auto;
+  width:200px;
+}
+
+.landingtitle {
+  font-family:'Nobile', sans-serif;
+}
+
+#home {
+  height:100%;
+}
+
+.headerbar {
+  /*background-color:rgb(34, 177, 76);*/
+  border-bottom:7px solid rgb(0, 0, 0);
+  color:rgb(255, 255, 255);
+  background-color:rgb(5, 210, 5);
+  top:0;
+  left:0;
+  right:0;
+  /*position:fixed;*/
+  height:27px;
+}
+
+.headertitle {
+  font-size:large;
+  font-family:'Nobile', sans-serif;
+  position:relative;
+  top:0.60em;
+  left:0.60em;
+}
+
+.headeraccountinfo {
+  float:right;
+}
+
+.headertext {
+  font-weight:bold;
+  position:relative;
+  top:0.37em;
+}
+
+.logoutbutton:hover {
+  background-color:rgb(5, 182, 5);
+  cursor:pointer;
+}
+
+#mainbody {
+  height:100%;
+}
+
+#mainleftpanel {
+  padding-left:1em;
+  width:170px;
+  float:left;
+  height:100%;
+}
+
+#activerooms {
+  height:100%;
+  float:left;
+  position:relative;
+}
+
+.panelheader {
+  font-weight:bold;
+  border-bottom: 2px solid rgb(0, 0, 0);
+}
+
+.paneltext {
+
+}
+
+.panelbutton:hover {
+  background-color:rgb(200, 200, 200);
+  cursor:pointer;
+}
+
+.showaddfriendsbutton {
+  float:right;
+}
+
+.roomitem:hover {
+  cursor:pointer;
+  background-color:rgb(200, 200, 200);
+}
+
+.roomitemactive {
+  border-right:7px solid rgb(7, 162, 232);
+}
+
+.roomiteminactive {
+
+}
+
+#addroomdialog {
+  border-left: 7px solid rgb(0, 0, 0);
+}
+
+#createroomtext {
+  width:95%;
+}
+
+.frienditem:hover {
+  background-color:rgb(200, 200, 200);
+}
+
+.frienditemonline {
+  border-right:7px solid rgb(5, 210, 5);
+}
+
+.frienditemoffline {
+  border-right:7px solid rgb(0, 0, 0);
+}
+
+.room {
+  position:relative;
+  height:100%;
+  width:470px;
+  float:left;
+}
+
+.roomtitlebar {
+  position:absolute;
+  top:0;
+  height:19px;
+  width:100%;
+  color:rgb(255, 255, 255);
+  background:rgb(7, 162, 232);
+  border-bottom: 2px solid rgb(0, 0, 0);
+}
+
+.roomtitle {
   font-weight:bold;
 }
 
-.friendnameoffline {
+.messagelist {
+  position:absolute;
+  top:19px;
+  bottom:77px;
+  width:100%;
+  border:1px solid black;
+  overflow:auto;
+}
 
+.messageinput {
+  border:1px solid rgb(0, 0, 0);
+  width:469px;
+  height:100%;
+  resize:none;
+}
+
+.message {
+
+}
+
+.pendingmessage {
+  color:rgb(100, 100, 100);
+}
+
+.author {
+  font-weight:bold;
+}
+
+.datetime {
+  float:right;
+}
+
+.addfriendsdialog {
+  border-left: 7px solid rgb(0, 0, 0);
+  position:relative;
+  top:21px;
+  z-index:100;
+  background-color:rgb(255, 255, 255);
+  border:1px solid black;
+}
+
+.fixedbottom {
+  height:77px;
+  position:absolute;
+  bottom:0;
+  width:100%;
 }

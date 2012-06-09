@@ -11,18 +11,15 @@
 <template name="room">
 {{#if showroom}}
   <div id="room_{{roomid}}" class="room">
-    <h1 class="roomtitle">{{roomname}}</h1>
-    {{#each messages}}
-      {{> message}}
-    {{/each}}
-    <textarea id="messagetext_{{roomid}}" />
-    <input type="button" class="sendbutton" value="send" />
- 
+    <div class="roomtitlebar">
+      <span class="roomtitle">{{roomname}}</span>
+      <span type="button" class="showaddfriendsbutton panelbutton">add friends to this room</span>
+    </div>
+
     {{#if isadmin}}
-    <input type="button" class="showaddfriendsbutton" value="add friends to this room" />
       {{#if addingfriends}}
       <div class="addfriendsdialog">
-        <h2>add friends</h2>
+        <div>add friends</div>
         <div id="friendsforroom_{{roomid}}">
         {{#if friendsforadd}}
           {{#each friendsforadd}}
@@ -32,14 +29,22 @@
         </div>
         
         {{#unless friendsforadd}}
-        <div>no friends to add</div>
+        <div>no friends chilln to add</div>
         {{/unless}}
 
-        <input type="button" id="addfriendsbutton" class="addfriendsbutton" value="add friends" />
-        <input type="button" class="hideaddfriendsbutton" value="cancel" />
+        <span id="addfriendsbutton" class="addfriendsbutton panelbutton">add friends</span>
+        <span class="hideaddfriendsbutton panelbutton">cancel</span>
       </div>
       {{/if}}
     {{/if}}
+    <div id="room_{{roomid}}_messagelist" class="messagelist">
+    {{#each messages}}
+      {{> message}}
+    {{/each}}
+    </div>
+    <div class="fixedbottom">
+      <textarea id="messagetext_{{roomid}}" class="messageinput" />
+    </div>
   </div>
 {{/if}}
 </template>

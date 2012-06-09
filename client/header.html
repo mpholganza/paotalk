@@ -1,5 +1,9 @@
 <template name="header">
-  <h1>paotalk</h1>
-  <h2>{{username}}</h2>
-  <input type="button" id="logoutbutton" class="logoutbutton" value="logout" />
+  <div class="headerbar">
+    <span class="headertitle">justchilln</span>
+    <span class="headeraccountinfo">
+      <span class="headertext">{{username}}</span>
+      <span id="logoutbutton" class="logoutbutton headertext">logout</span>
+    </span>
+  </div>
 </template>

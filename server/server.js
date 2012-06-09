@@ -63,11 +63,11 @@ Meteor.methods({
     // Add friends to friendlist
     Users.update(userid, {$pushAll : {friends: friendids}});
   },
-  updateUserStatus: function (userid) {
+  updateUserStatus: function (userid, userstatus) {
     // returning the current SERVER time so proper time comparisons
     // can be calculated on the client side
-    Users.update(userid, {$set: {lastactive: new Date().getTime()}});                  
-    return new Date().getTime();
+    var datetime = new Date().getTime();
+    Users.update(userid, {$set: {lastactive: datetime, status:userstatus}});
   },
   createRoom: function (userid, roomname) {
     var roomid = Rooms.insert({
@@ -88,23 +88,26 @@ Meteor.methods({
       roomname:roomname
     });
   },
-  sendMessage: function (roomid, authorid, authorname, message) {
-    return Messages.insert({
-      roomid:roomid,
-      authorid:authorid,
-      authorname:authorname,
-      message:message
-    });
-  },
   test: function (x) {
     console.log("test function: " + x);
     return x;
   }
 });
 
-var handle = Messages.find({}).observe({
+var messagehandle = Messages.find({}).observe({
   added: function (message) {
     Messages.update({_id:message._id}, {$set: {datetime:new Date().getTime()}});
   }
 });
+
+// put this in a closure
+var statusupdateinterval = 60000;
+var userstatus = Meteor.setInterval(function () {
+  var currdifftime = new Date().getTime() - statusupdateinterval;
+  Users.update(
+    {lastactive: {$lt: currdifftime}, status: 'online'},
+    {$set: {status: 'offline'}},
+    {multi: true}
+  );
+}, statusupdateinterval);
 

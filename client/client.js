@@ -17,34 +17,64 @@ Template.header.username = function () {
 };
 
 Template.header.events = {
-  'click input.logoutbutton': function () {
+  'click span.logoutbutton': function () {
     FB.logout();
   }
 };
 
 Template.roomlistpanel.rooms = function () {
-  return UserRooms.find({});
+  var rooms = UserRooms.find({});
+  if (rooms.count() == 0) { rooms = 0; }
+  return rooms;
+};
+
+Template.roomlistpanel.showcreateroom = function () {
+  return Session.get("showcreateroom");
 };
 
 Template.roomlistpanel.events = {
-  'click input.createroombutton': function () {
+  'click span.createroombutton': function () {
     var roomtext = document.getElementById("createroomtext");
     if (roomtext.value) {
       Meteor.call("createRoom", Session.get("userid"), roomtext.value);
       roomtext.value = "";
+      Session.set("showcreateroom", 0);
+    }
+  },
+  'click div.addroomsbutton': function () {
+    Session.set("showcreateroom", 1);
+  },
+  'click span.canceladdroomsbutton': function () {
+    Session.set("showcreateroom", 0);
+  }
+};
+
+var activeRooms = new Array(); // closure this
+Template.roomitem.events = {
+  'click div.roomitem': function () {
+    var showroomname = "showroom_" + this.roomid;
+    if (Session.get(showroomname)) {
+      Session.set(showroomname, 0);
+      activeRooms.splice(activeRooms.indexOf(this.roomid), 1);
+    } else {
+      Session.set(showroomname, 1);
+      activeRooms.push(this.roomid);
+
+      var scrollheightvarname = "room_" + this.roomid + "_scrollheight";
+      if (!Session.get(scrollheightvarname)) {
+        Session.set(scrollheightvarname, 0);
+      }
     }
   }
 };
 
-Template.roomitem.events = {
-  'click span.roomname': function () {
-    var showroomname = "showroom_" + this.roomid;
-    if (Session.get(showroomname)) {
-      Session.set(showroomname, 0);
-    } else {
-      Session.set(showroomname, 1);
-    }
+Template.roomitem.isactive = function () {
+  var showroomname = "showroom_" + this.roomid;
+  if (Session.get(showroomname)) {
+    return "active";
   }
+
+  return "inactive";
 };
 
 Template.friendpanel.username = Template.header.username;
@@ -54,9 +84,7 @@ Template.friendpanel.friends =  function () {
 };
 
 Template.friend.status = function () {
-  if (!this.lastactive) { return "offline"; } // TODO: delete this later
-  // using Session var to cause an invalidate to occur when it is updated
-  return ((Session.get("currenttime") - this.lastactive) > 10000) ? "offline": "online";
+  return this.status;
 };
 
 Template.activerooms.rooms = Template.roomlistpanel.rooms;
@@ -66,30 +94,27 @@ Template.room.messages = function () {
 };
 
 Template.room.events = {
-  'click input.sendbutton': function () {
-    /*Meteor.call('sendMessage',
-      this.roomid,
-      Session.get("userid"),
-      Session.get("username"),
-      document.getElementById("messagetext_" + this.roomid).value,
-      function (err, result) {
-        //alert("err " + err + " result " + result);
-      }
-    );*/
-    Messages.insert({
-      roomid:this.roomid,
-      authorid:Session.get("userid"),
-      authorname:Session.get("username"),
-      message:document.getElementById("messagetext_" + this.roomid).value
-    });
+  'keypress textarea.messageinput': function (e) {
+    if (e.keyCode == 13) { // enter pressed
+      var messagetext = document.getElementById("messagetext_" + this.roomid);
+      Messages.insert({
+        roomid:this.roomid,
+        authorid:Session.get("userid"),
+        authorname:Session.get("username"),
+        message:messagetext.value
+      });
+
+      messagetext.value = "";
+      messagetext.focus();
+    }
   },
-  'click input.showaddfriendsbutton': function () {
+  'click span.showaddfriendsbutton': function () {
     Session.set("addingfriendstoroom_" + this.roomid, 1);
   },
-  'click input.hideaddfriendsbutton': function () {
+  'click span.hideaddfriendsbutton': function () {
     Session.set("addingfriendstoroom_" + this.roomid, 0);
   },
-  'click input.addfriendsbutton': function () {
+  'click span.addfriendsbutton': function () {
     var friendstoaddlist = document.getElementById("friendsforroom_" + this.roomid);
     if (friendstoaddlist.hasChildNodes()) {
       var friendnodes = friendstoaddlist.children;
@@ -135,3 +160,19 @@ Template.message.readabledatetime = function () {
 Template.message.serverconfirmed = function () {
   return this.datetime;
 };
+
+var autoScroll = function () {
+  for (var i = 0; i < activeRooms.length; i++) {
+    var roomid = activeRooms[i];
+    var messagelist = document.getElementById("room_" + roomid + "_messagelist");
+    var scrollheight = messagelist.scrollHeight;
+
+    var scrollheightvarname = "room_" + roomid + "_scrollheight";
+    if (Session.get(scrollheightvarname) < scrollheight) {
+      messagelist.scrollTop = scrollheight;
+    }
+    Session.set(scrollheightvarname, scrollheight);
+  }
+};
+
+Meteor.setInterval(autoScroll, 1000);
