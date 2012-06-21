@@ -1,11 +1,9 @@
 <template name="activerooms">
-  <div id="activerooms">
   {{#if rooms}}
     {{#each rooms}}
       {{> room}}
     {{/each}}
   {{/if}}
-  </div>
 </template>
 
 <template name="room">
@@ -13,33 +11,63 @@
   <div id="room_{{roomid}}" class="room">
     <div class="roomtitlebar">
       <span class="roomtitle">{{roomname}}</span>
-      <span type="button" class="showaddfriendsbutton panelbutton">add friends to this room</span>
+      {{#if isadmin}}
+      <a type="button" class="manageroombutton panelbutton">manage</a>
+      {{/if}}
     </div>
-
-    {{#if isadmin}}
+    {{#if managing}}
+    <div class="manageroomdialog">
+      <div class="manageroomdialogheader">
+        <a href="#" class="tabheader tabheader{{addingfriends}} addfriendstabheader">add friends</a>
+        <a href="#" class="tabheader tabheader{{removingfriends}} removefriendstabheader">remove friends</a>
+        <a href="#" class="tabheader tabheader{{changingsettings}} settingstabheader">setting</a>
+      </div>
       {{#if addingfriends}}
-      <div class="addfriendsdialog">
-        <div>add friends</div>
-        <div id="friendsforroom_{{roomid}}">
-        {{#if friendsforadd}}
-          {{#each friendsforadd}}
-            {{> frienditem}}
-          {{/each}}
-        {{/if}}
-        </div>
-        
-        {{#unless friendsforadd}}
-        <div>no friends chilln to add</div>
-        {{/unless}}
-
-        <span id="addfriendsbutton" class="addfriendsbutton panelbutton">add friends</span>
-        <span class="hideaddfriendsbutton panelbutton">cancel</span>
+      <div id="friendsforroom_{{roomid}}">
+        {{#each friendstoadd}}
+          {{> frienditem}}
+        {{else}}
+          <div>no friends chilln to add</div>
+        {{/each}}
       </div>
       {{/if}}
+
+      {{#if removingfriends}}
+      <div id="friendsforroom_{{roomid}}">
+        {{#each friendstoremove}}
+          {{> roomfrienditem}}
+        {{else}}
+          <div>no friends to remove</div>
+        {{/each}}
+      </div>
+      {{/if}}
+
+      {{#if changingsettings}}
+      <div>settings. under construction.</div>
+      {{/if}}
+
+      <div>
+        {{#if addingfriends}}
+        <a href="#" class="addfriendsbutton panelbutton">add friends</a>
+        {{/if}}
+
+        {{#if removingfriends}}
+        <a href="#" class="removefriendsbutton panelbutton">remove friends</a>
+        {{/if}}
+
+        {{#if changingsettings}}
+        <a href="#" class="settingsbutton panelbutton">apply settings</a>
+        {{/if}}
+
+        <a href="#" class="hideaddfriendsbutton panelbutton">cancel</a>
+      </div>
+    </div>
     {{/if}}
     <div id="room_{{roomid}}_messagelist" class="messagelist">
     {{#each messages}}
       {{> message}}
+    {{else}}
+      <div class="nomessages">no messages in this room</div>
     {{/each}}
     </div>
     <div class="fixedbottom">
@@ -50,7 +78,7 @@
 </template>
 
 <template name="message">
-  <div class="message">
+  <div class="messageitem">
     <span class="author">{{authorname}}</span>
     {{#if serverconfirmed}}
     <span class="datetime">{{readabledatetime}}</span>
@@ -66,5 +94,11 @@
 <template name="frienditem">
   <div class="frienditem">
     <input type="checkbox" value="{{_id}}">{{name}}</input>
+  </div>
+</template>
+
+<template name="roomfrienditem">
+  <div class="frienditem">
+    <input type="checkbox" value="{{userid}}">{{username}}</input>
   </div>
 </template>

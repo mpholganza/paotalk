@@ -32,6 +32,7 @@ body {
 
 #home {
   height:100%;
+  font-size:80%;
 }
 
 .headerbar {
@@ -50,8 +51,8 @@ body {
   font-size:large;
   font-family:'Nobile', sans-serif;
   position:relative;
-  top:0.60em;
-  left:0.60em;
+  top:12px;
+  left:12px;
 }
 
 .headeraccountinfo {
@@ -87,6 +88,9 @@ body {
 }
 
 .panelheader {
+  color:rgb(255, 255, 255);
+  background-color:rgb(107, 107, 107);
+  font-size:100%;
   font-weight:bold;
   border-bottom: 2px solid rgb(0, 0, 0);
 }
@@ -95,13 +99,37 @@ body {
 
 }
 
+.panelbutton {
+  color:rgb(0, 0, 0); 
+  text-decoration:none;
+}
+
 .panelbutton:hover {
-  background-color:rgb(200, 200, 200);
+  background-color:rgb(230, 230, 230);
   cursor:pointer;
 }
 
-.showaddfriendsbutton {
+.manageroombutton {
   float:right;
+}
+
+.manageroomdialogheader {
+  margin-top:7px;
+}
+
+.tabheader {
+  color:rgb(0, 0, 0);
+  text-decoration:none;
+}
+
+.tabheaderselected {
+  border-top:7px solid rgb(232, 64, 32);
+}
+
+.roomitem {
+  overflow:hidden;
+  white-space:nowrap;
+  text-overflow:ellipsis;
 }
 
 .roomitem:hover {
@@ -123,6 +151,14 @@ body {
 
 #createroomtext {
   width:95%;
+}
+
+.canceladdroomsbutton {
+  float:right;
+}
+
+.frienditem {
+
 }
 
 .frienditem:hover {
@@ -147,35 +183,48 @@ body {
 .roomtitlebar {
   position:absolute;
   top:0;
-  height:19px;
   width:100%;
   color:rgb(255, 255, 255);
   background:rgb(7, 162, 232);
-  border-bottom: 2px solid rgb(0, 0, 0);
+  border-bottom:2px solid rgb(0, 0, 0);
+  border-left:1px solid rgb(7, 162, 232);
+  border-right:1px solid rgb(7, 162, 232);
 }
 
 .roomtitle {
+  font-size:100%;
   font-weight:bold;
+}
+
+.nomessages {
+  margin:0 auto;
+  display:block;
+  width:12em;
 }
 
 .messagelist {
   position:absolute;
-  top:19px;
-  bottom:77px;
+  top:16px;
+  bottom:78px;
   width:100%;
   border:1px solid black;
   overflow:auto;
 }
 
 .messageinput {
-  border:1px solid rgb(0, 0, 0);
-  width:469px;
-  height:100%;
+  border:0px solid rgb(0, 0, 0);
+  width:465px;
+  height:73px;
   resize:none;
 }
 
-.message {
+.messageitem {
 
+}
+
+.message {
+  white-space:pre-wrap;
+  word-wrap:break-word;
 }
 
 .pendingmessage {
@@ -190,18 +239,23 @@ body {
   float:right;
 }
 
-.addfriendsdialog {
+.manageroomdialog {
   border-left: 7px solid rgb(0, 0, 0);
   position:relative;
-  top:21px;
+  top:16px;
   z-index:100;
   background-color:rgb(255, 255, 255);
   border:1px solid black;
 }
 
+.hideaddfriendsbutton {
+  float:right;
+}
+
 .fixedbottom {
-  height:77px;
+  height:78px;
   position:absolute;
   bottom:0;
   width:100%;
+  border:1px solid black;
 }

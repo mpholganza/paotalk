@@ -46,9 +46,8 @@ function importFriends(userid) {
 
 var updateUserStatusTimer;
 function logon(user) {
-  if (user.firstlogon) {
-    importFriends(user._id)
-  }
+  // TODO: this doesn't have to be on every logon (might be unnecessary)
+  importFriends(user._id)
 
   Session.set("userid", user._id);
   Session.set("username", user.name);
@@ -60,6 +59,10 @@ function logon(user) {
 
   Meteor.autosubscribe(function () {
     Meteor.subscribe("userroomlist", Session.get("userid"));
+  });
+
+  Meteor.autosubscribe(function () {
+    Meteor.subscribe("useradminroomslist", Session.get("activerooms"));
   });
 
   Meteor.autosubscribe(function () {
